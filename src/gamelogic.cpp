@@ -300,7 +300,7 @@ void updateFrame(GLFWwindow* window) {
 
     glm::mat4 projection = glm::perspective(glm::radians(80.0f), float(windowWidth) / float(windowHeight), 0.1f, 350.f);
 
-    glm::vec3 cameraPosition = glm::vec3(0, 2, -25);
+    glm::vec3 cameraPosition = glm::vec3(0, 2, -20);
 
     // Some math to make the camera move in a nice way
     //float lookRotation = -0.6 / (1 + exp(-5 * (padPositionX-0.5))) + 0.3;
@@ -316,7 +316,7 @@ void updateFrame(GLFWwindow* window) {
 
     // Move and rotate various SceneNodes
     boxNode->position = { 0, -10, -80 };
-    mysphereNode->position = { 0, 0, 0 };
+    mysphereNode->position = { 0, 0, -5 };
 
     ballNode->position = ballPosition;
     ballNode->scale = glm::vec3(ballRadius);
