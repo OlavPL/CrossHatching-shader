@@ -4,7 +4,7 @@ in layout(location = 0) vec3 normal_in;
 in layout(location = 1) vec2 textureCoordinates;
 in layout(location = 2) vec3 fragPos;
 
-uniform layout(location = 5) vec3 cameraPos;
+uniform layout(location = 6) vec3 cameraPos;
 uniform layout(location = 8) float shinyness;
 uniform layout(location = 13) float ballRadius;
 

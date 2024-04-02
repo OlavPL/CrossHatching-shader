@@ -26,6 +26,9 @@ unsigned int generateBuffer(Mesh &mesh) {
     if (mesh.textureCoordinates.size() > 0) {
         generateAttribute(2, 2, mesh.textureCoordinates, false);
     }
+    if (mesh.directionField.size() > 0) {
+        generateAttribute(3, 3, mesh.directionField, true);
+    }
 
     unsigned int indexBufferID;
     glGenBuffers(1, &indexBufferID);

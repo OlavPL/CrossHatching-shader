@@ -1,0 +1,91 @@
+# Blender 4.0.2 MTL File: 'uploads_files_2992809_SOL.blend'
+# www.blender.org
+
+newmtl Material.001
+Ka 1.000000 1.000000 1.000000
+Kd 0.570342 0.483031 0.368188
+Ks 0.563636 0.563636 0.563636
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Ns C:/character_hands_Roughness.jpg
+map_Bump -bm 1.000000 C:/character_hands_Normal.jpg
+
+newmtl armor
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/character_armor_BaseColor.jpg
+map_Ns C:/character_armor_Roughness.jpg
+map_refl C:/character_armor_Metallic.jpg
+map_Bump -bm 1.000000 C:/character_armor_Normal.jpg
+
+newmtl dagger
+Ka 0.830986 0.830986 0.830986
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/dagger_dagger_BaseColor.jpg
+map_Ns C:/dagger_dagger_Roughness.jpg
+map_refl C:/dagger_dagger_Metallic.jpg
+map_Bump -bm 1.000000 C:/dagger_dagger_Normal.jpg
+
+newmtl gold
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:/mask_gold_BaseColor.jpg
+map_Ns C:/mask_gold_Roughness.jpg
+map_refl C:/mask_gold_Metallic.jpg
+map_Bump -bm 1.000000 C:/mask_gold_Normal.jpg
+
+newmtl human.HighPolyEyes
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl human.body
+Ns 502.809875
+Ka 1.000000 1.000000 1.000000
+Kd 0.519650 0.422183 0.353028
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl robe
+Ka 1.000000 1.000000 1.000000
+Kd 0.972944 0.978968 0.988248
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Ns C:/robe lp _robe_Roughness.jpg
+map_Bump -bm 1.000000 C:/robe lp _robe_Normal.jpg
+
+newmtl wire_224086086
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/heart_wire_224086086_BaseColor.jpg
+map_Ns C:/heart_wire_224086086_Roughness.jpg
+map_Bump -bm 1.000000 C:/heart_wire_224086086_Normal.jpg

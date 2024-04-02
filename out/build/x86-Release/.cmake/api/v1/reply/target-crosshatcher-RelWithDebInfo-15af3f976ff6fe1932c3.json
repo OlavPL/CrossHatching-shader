@@ -1,0 +1,630 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "crosshatcher.exe"
+		},
+		{
+			"path" : "crosshatcher.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"sfml_find_package",
+			"add_definitions",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt",
+			"lib/SFML/cmake/Macros.cmake",
+			"lib/SFML/src/SFML/Audio/CMakeLists.txt",
+			"lib/SFML/src/SFML/System/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 126,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 129,
+				"parent" : 0
+			},
+			{
+				"file" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 69,
+				"parent" : 3
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 4
+			},
+			{
+				"command" : 1,
+				"file" : 2,
+				"line" : 88,
+				"parent" : 3
+			},
+			{
+				"file" : 3
+			},
+			{
+				"command" : 1,
+				"file" : 3,
+				"line" : 99,
+				"parent" : 7
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 70,
+				"parent" : 3
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 9
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 9
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 9
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 9
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 71,
+				"parent" : 3
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 309,
+				"parent" : 14
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 124,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 83,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /W4 /MD /Zi /O2 /Ob1 /DNDEBUG -std:c++14"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "FMT_LOCALE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "GLFW_INCLUDE_NONE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "PROJECT_SOURCE_DIR=\"E:/Dev/CrossHatching-shader\""
+				},
+				{
+					"backtrace" : 2,
+					"define" : "SFML_STATIC"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/src"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glad/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glfw/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/lodepng"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glm"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/stb"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/arrrgh"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/SFML/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "E:/Dev/CrossHatching-shader/lib/fmt/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					2,
+					2
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				30
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /Zi /O2 /Ob1 /DNDEBUG"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "FMT_LOCALE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "GLFW_INCLUDE_NONE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "PROJECT_SOURCE_DIR=\"E:/Dev/CrossHatching-shader\""
+				},
+				{
+					"backtrace" : 2,
+					"define" : "SFML_STATIC"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/src"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glad/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glfw/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/lodepng"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/glm"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/stb"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/arrrgh"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "E:/Dev/CrossHatching-shader/lib/SFML/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "E:/Dev/CrossHatching-shader/lib/fmt/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				29
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "glfw::@17f284a5fc0809a54549"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "sfml-system::@a0857d3fa2d27435d485"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fmt::@334b76146eeaa333306c"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "sfml-audio::@2c88909a109778213ad3"
+		}
+	],
+	"id" : "crosshatcher::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /W4 /MD /Zi /O2 /Ob1 /DNDEBUG",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/machine:X86 /debug /INCREMENTAL /subsystem:console",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "lib\\glfw\\src\\glfw3.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "lib\\SFML\\lib\\sfml-audio-s.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "lib\\fmt\\fmt.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\openal32.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "lib\\SFML\\lib\\sfml-system-s.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "winmm.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 10,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\vorbisenc.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\vorbisfile.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 12,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\vorbis.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\ogg.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 15,
+				"fragment" : "E:\\Dev\\CrossHatching-shader\\lib\\SFML\\extlibs\\libs-msvc-universal\\x86\\flac.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "crosshatcher",
+	"nameOnDisk" : "crosshatcher.exe",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "sources",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8
+			]
+		},
+		{
+			"name" : "headers",
+			"sourceIndexes" : 
+			[
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22
+			]
+		},
+		{
+			"name" : "shaders",
+			"sourceIndexes" : 
+			[
+				23,
+				24,
+				25,
+				26
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				27,
+				28
+			]
+		},
+		{
+			"name" : "libraries",
+			"sourceIndexes" : 
+			[
+				29,
+				30
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/gamelogic.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/program.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/sceneGraph.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/utilities/glfont.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/utilities/glutils.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/utilities/imageLoader.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/utilities/shapes.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/utilities/timeutils.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/gamelogic.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/program.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/sceneGraph.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/timestamps.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/camera.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/glfont.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/glutils.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/imageLoader.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/mesh.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/shader.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/shapes.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/timeutils.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/tiny_obj_loader.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "src/utilities/window.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "res/shaders/simple.frag",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "res/shaders/simple.vert",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "res/shaders/smallHatch.frag",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "res/shaders/smallHatch.vert",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : ".gitignore",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 1,
+			"path" : "CMakeLists.txt",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "lib/glad/src/glad.c",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "lib/lodepng/lodepng.cpp",
+			"sourceGroupIndex" : 4
+		}
+	],
+	"type" : "EXECUTABLE"
+}
