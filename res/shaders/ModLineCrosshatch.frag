@@ -3,14 +3,9 @@ in layout(location = 0) vec3 normal_in;
 in layout(location = 1) vec2 textureCoordinates;
 in layout(location = 2) vec3 fragPos;
 in layout(location = 3) vec3 cameraPos;
-in layout(location = 14) mat4 projection_in;
-in layout(location = 5) mat4 cameraTransform_in;
-//in layout(location = 10) mat4 modelMatrix_in;
 
 uniform sampler2D voronoiTexture;
-uniform sampler2D signalTexture;
 uniform layout(location = 8) float shinyness;
-uniform layout(location = 9) vec2 u_resolution;
 
 out vec4 color;
 
@@ -39,6 +34,7 @@ float makeWave(float angle, float thickness, float frequency, int direction)
         wave = mod(rotatedPos.x, frequency) /frequency;
     else
         wave = mod(rotatedPos.y, frequency) /frequency;
+
 
     wave += thickness;
     wave = floor(wave);
@@ -84,45 +80,32 @@ vec3 normal = normalize(normal_in);
                     + pow(max(dot(viewDir, reflect(-vecToLight1, normal)),  0.0), shinyness) * lightArray[1].color * L2
                     + pow(max(dot(viewDir, reflect(-vecToLight2, normal)),  0.0), shinyness) * lightArray[2].color * L3;
 
-    float waveFrequency = 30.0; // Adjust this to change the frequency of the waves
-    float waveAmplitude = 0.2; // Adjust this to change the amplitude of the waves
-
-    float noiseFrequency = 1.3; // Adjust this to change the frequency of the noise
-    float noiseAmplitude = 0.02; // Adjust this to change the amplitude of the noise
-
-    // voronoi cells for irregular line rotation of waves. 
-    // Forcing it within 9 values to reduce the noise between and within cells of the texture.
-    vec4 voronoiColor = texture(voronoiTexture, textureCoordinates.xy*8);
-//    voronoiColor *= 12;
-//    voronoiColor = floor(voronoiColor);
-//    voronoiColor /= 12;
-    float voronoiIntensity = voronoiColor.x * 0.2989 + voronoiColor.y * 0.5870 + voronoiColor.z * 0.1140;
-
-
-    // TODO: trying to add width noise to the black lines. Or just make em more dense
-
     //Convert the light colors to grayscale for intensity
     vec3 lightColors = vec3(diffuse + specular);
     float lightIntensity = lightColors.x * 0.2989 + lightColors.y * 0.5870 + lightColors.z * 0.1140;
 
+    // voronoi cells for irregular line rotation of waves. 
+    vec4 voronoiColor = texture(voronoiTexture, textureCoordinates.xy*0.025);
+//    vec4 voronoiColor = texture(voronoiTexture, fragPos.xy*0.006);
+    float voronoiIntensity = voronoiColor.x * 0.2989 + voronoiColor.y * 0.5870 + voronoiColor.z * 0.1140;
+
+
     // Determine which combination of waves to use in the final intentity 
     // based on lightIntensity thresholds
-    float wave;
+    float wave = 0;
     if(lightIntensity > 0.5)
 		wave = 1;
     else if (lightIntensity >= 0.35)
-        wave = makeWave(voronoiIntensity, 0.5, 0.25, 0);
+        wave = makeWave(voronoiIntensity+0.25, 0.6, 0.15, 0);
     else if(lightIntensity >= 0.20)
-		wave = makeWave(voronoiIntensity, 0.5, 0.25, 0) -
-        makeWave(voronoiIntensity+45, 0.3, 0.25, 1);
+		wave = makeWave(voronoiIntensity+0.25, 0.6, 0.15, 0) *
+        makeWave(voronoiIntensity, 0.65, 0.2, 1);
     else if(lightIntensity >= 0.10)
     {
-	    wave = makeWave(voronoiIntensity, 0.5, 0.25, 0) -
-        makeWave(voronoiIntensity+45, 0.3, 0.25, 1) - 
-        makeWave(voronoiIntensity, 0.7, 0.2, 0);
+	    wave = makeWave(voronoiIntensity+0.25, 0.6, 0.15, 0) *
+        makeWave(voronoiIntensity, 0.65, 0.2, 1) *
+        makeWave(voronoiIntensity, 0.4, 0.2, 0);
     }
-    else 
-        wave =  0;
            
     color = vec4(vec3(wave), 1.0);
 }

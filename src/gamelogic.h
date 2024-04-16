@@ -10,6 +10,6 @@ void updateNodeTransformations(SceneNode* node, glm::mat4 transformationThusFar)
 void initGame(GLFWwindow* window, CommandLineOptions options);
 void updateFrame(GLFWwindow* window);
 void renderFrame(GLFWwindow* window);
-SceneNode* getShapesFromFile(std::string inputfile);
+SceneNode* getShapesFromFile(std::string inputfile, float scale);
 float toRadians(float degrees);
 unsigned int getTextureID(PNGImage image);

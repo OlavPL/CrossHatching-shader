@@ -36,7 +36,10 @@ unsigned int previousKeyFrame = 0;
 SceneNode* rootNode;
 SceneNode* boxNode;
 SceneNode* sphereNode;
+
 SceneNode* solNode;
+SceneNode* monkeyNode;
+bool monkeyActive = false;
 
 // Light nodes
 SceneNode* lightNode1;
@@ -55,9 +58,6 @@ const glm::vec3 boxDimensions(180, 90, 90);
 
 CommandLineOptions options;
 
-
-
-
 bool mouseLeftPressed   = false;
 bool mouseLeftReleased  = false;
 bool mouseRightPressed  = false;
@@ -69,6 +69,8 @@ bool upWasPressed = false;
 bool upIsPressed = false;
 bool downWasPressed = false;
 bool downIsPressed = false;
+bool tWasPressed = false;
+bool tIsPressed = false;
 
 bool spinLights = false;
 float spinLightTimer = 0;
@@ -111,17 +113,9 @@ PNGImage hatch_dense;
 unsigned int hatch_denseID;
 GLint hatch_dense_location;
 
+GLint resolutionLocation;
+int resWidth, resHeight;
 
-//void mouseCallback(GLFWwindow* window, double x, double y) {
-//    int windowWidth, windowHeight;
-//    glfwGetWindowSize(window, &windowWidth, &windowHeight);
-//    glViewport(0, 0, windowWidth, windowHeight);
-//
-//    double deltaX = x - lastMouseX;
-//    double deltaY = y - lastMouseY;
-//
-//    glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
-//}
 
 //// A few lines to help you if you've never used c++ structs
  struct LightSource {
@@ -136,8 +130,6 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     }
 
     options = gameOptions;
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    //glfwSetCursorPosCallback(window, mouseCallback);
 
     // Test shader
     shader = new Gloom::Shader();
@@ -145,7 +137,6 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
         //add voronoi texture to shader
 
     texture = loadPNGFile("../res/textures/voronoiTexture.png");
-    //glActiveTexture(GL_TEXTURE0); // Activate first texture unit 0
     voronoiTextureID = getTextureID(texture);
     glBindTexture(GL_TEXTURE_2D, voronoiTextureID);
     textureLocation = shader->getUniformFromName("voronoiTexture");
@@ -172,10 +163,14 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     hatch_dense_location = shader->getUniformFromName("hatch_dense");
     glUniform1i(hatch_dense_location, 3);
 
+    glfwGetFramebufferSize(window, &resWidth, &resHeight);
+    resolutionLocation = shader->getUniformFromName("resolution");
+    glUniform2i(resolutionLocation, resWidth, resHeight);
+
     shader1 = shader;
 
     shader2 = new Gloom::Shader();
-    shader2->makeBasicShader("../res/shaders/basicCrossHatch.vert", "../res/shaders/basicCrossHatch.frag");
+    shader2->makeBasicShader("../res/shaders/ModLineCrossHatch.vert", "../res/shaders/ModLineCrossHatch.frag");
     shader = shader2;
     shader->activate();
 
@@ -191,6 +186,7 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     rootNode = createSceneNode();
     boxNode = createSceneNode();
     sphereNode = createSceneNode();
+    rootNode->children.push_back(sphereNode);
 
     boxNode->vertexArrayObjectID  = boxVAO;
     boxNode->VAOIndexCount        = box.indices.size();
@@ -202,16 +198,15 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     sphereNode->shinyness = 10;
     sphereNode->position = glm::vec3(0, 0, -10);
 
-    solNode = getShapesFromFile("../res/models/SOL2.obj");
+    solNode = getShapesFromFile("../res/models/SOL2.obj", 50);
     solNode->shinyness = 10;
     solNode->position = glm::vec3(0, -10, 10);
+    solNode->scale = glm::vec3(50, 50, 50);
 
-
-    
-    //rootNode->children.push_back(boxNode);
-    rootNode->children.push_back(sphereNode);
-    rootNode->children.push_back(solNode);
-
+    monkeyNode = getShapesFromFile("../res/models/monkey.obj", 10);
+    monkeyNode->shinyness = 10;
+    monkeyNode->position = glm::vec3(0, -10, 10);
+    monkeyNode->scale = glm::vec3(10, 10, 10);
 
 
     // Set up lights
@@ -257,6 +252,9 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     lightNode5->position.y = -45;
     lightNode5->position.z = -50;
 
+
+    //Making sure the SolNode is the last for when we are changing models.
+    rootNode->children.push_back(solNode);
 
     glfwGetTime();
 
@@ -330,16 +328,30 @@ void updateFrame(GLFWwindow* window) {
         shader->deactivate();
         shader = shader1;
         shader->activate();
-        //shader1->activate();
-
     }
     if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
     {
         shader->deactivate();
         shader = shader2;
         shader->activate();
-		//shader2->activate();
 	}
+
+    tWasPressed = tIsPressed;
+    tIsPressed = (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS);
+    if (tIsPressed && !tWasPressed)
+    {
+        rootNode->children.pop_back();
+        if (monkeyActive)
+        {
+			rootNode->children.push_back(solNode);
+			monkeyActive = false;
+		}
+        else
+        {
+			rootNode->children.push_back(monkeyNode);
+			monkeyActive = true;
+		}
+    }
 
     // If Q is pressed this frame, spin lights
     qWasPressed = qIsPressed;
@@ -383,21 +395,17 @@ void updateFrame(GLFWwindow* window) {
 
     cameraFront = normalize(cameraRotation);
 
-    //boxNode->position = glm::vec3(0, 0, -80);
-    ////sphereNode->position = glm::vec3(0, 0, -10);
-    //solNode->position = glm::vec3(0, 0, 0);
-
     if (spinLights)
     {
         spinLightTimer += deltaTime * lightSpeed;
 
-        lightNode3->position.x = sin(spinLightTimer ) * 35;
-        lightNode3->position.z = cos(spinLightTimer) * 35;
-        lightNode3->position.y = sin(spinLightTimer *0.2) * 45;
+        lightNode3->position.x = sin(spinLightTimer ) * 40;
+        lightNode3->position.z = cos(spinLightTimer) * 40;
+        lightNode3->position.y = sin(spinLightTimer *0.2) * 35 -10;
 
-        sphereNode->position.x = sin(spinLightTimer) * 35;
-        sphereNode->position.z = cos(spinLightTimer) * 35;
-        sphereNode->position.y = sin(spinLightTimer * 0.2) * 45;
+        sphereNode->position.x = sin(spinLightTimer) * 40;
+        sphereNode->position.z = cos(spinLightTimer) * 40;
+        sphereNode->position.y = sin(spinLightTimer * 0.2) * 35 -10;
     }
 
     glm::mat4 projection = glm::perspective(glm::radians(80.0f), float(windowWidth) / float(windowHeight), 0.1f, 350.f);
@@ -405,6 +413,7 @@ void updateFrame(GLFWwindow* window) {
     // camera look at center
     // update camera for movement relative to camera
     cameraTransform = glm::lookAt(cameraPosition, (cameraPosition + cameraFront), up);
+
 
     VP = projection * cameraTransform;
     updateNodeTransformations(boxNode, VP);
@@ -417,11 +426,14 @@ void updateFrame(GLFWwindow* window) {
     glUniform1i(hatch_dense_location, 3);
 
     // Move and rotate various SceneNodes
-    //glUniform3fv(10, 1, glm::value_ptr(lightNode1->position));
-    //glUniform3fv(11, 1, glm::value_ptr(lightNode2->position));
     glUniformMatrix4fv(4, 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(5, 1, GL_FALSE, glm::value_ptr(cameraTransform));
     glUniformMatrix4fv(6, 1, GL_FALSE, glm::value_ptr(cameraPosition));
+
+
+    // Passing the resolution to shader
+    glUniform2i(resolutionLocation, resWidth, resHeight);
+
     updateNodeTransformations(rootNode, glm::mat4(1));
 }
 
@@ -459,14 +471,6 @@ void updateNodeTransformations(SceneNode* node, glm::mat4 transformationThusFar)
 }
 
 void renderNode(SceneNode* node) {
-    //if (node == sphereNode) {
-    //    //shader->deactivate();
-    //    sphereShader->activate();
-    //}
-    //else {
-    //    //sphereShader->deactivate();
-    //    shader->activate();
-    //}
 
     glUniformMatrix4fv(3, 1, GL_FALSE, glm::value_ptr(node->currentTransformationMatrix));
     //Normal matrix
@@ -497,12 +501,11 @@ void renderFrame(GLFWwindow* window) {
     renderNode(rootNode);
 }
 
-SceneNode* getShapesFromFile(std::string inputfile)
+SceneNode* getShapesFromFile(std::string inputfile, float scale)
 {
     // Load the .obj file
     tinyobj::ObjReaderConfig reader_config;
     reader_config.mtl_search_path = "../res/models"; // Path to material files
-    //reader_config.triangulate = true;
 
     tinyobj::ObjReader reader;
 
@@ -534,8 +537,6 @@ SceneNode* getShapesFromFile(std::string inputfile)
         {
             size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
 
-
-
             // Loop over vertices in the face.
             for (size_t v = 0; v < fv; v++) 
             {
@@ -550,7 +551,7 @@ SceneNode* getShapesFromFile(std::string inputfile)
                 mesh.indices.push_back(new_vertex_index);
 
                 // Check if `normal_index` is zero or positive. negative = no normal data
-                // Also adding directoinField
+                // Also adding directionField, which was scrapped.
                 if (idx.normal_index >= 0) {
                     tinyobj::real_t nx = attrib.normals[3 * size_t(idx.normal_index) + 0];
                     tinyobj::real_t ny = attrib.normals[3 * size_t(idx.normal_index) + 1];
@@ -567,13 +568,11 @@ SceneNode* getShapesFromFile(std::string inputfile)
                         direction = glm::vec3(0, normal.z, -normal.y);
                     }
 
-                    // Calculate the tangent vector by taking the cross product of the normal vector and the arbitrary vector
-                    glm::vec3 tangent = glm::cross(normal, direction);
-                    // Calculate the principal curvature direction by taking the cross product of the normal vector and the tangent vector
-                    glm::vec3 principalCurvatureDirection = glm::cross(normal, tangent);
-                    mesh.directionField.push_back(principalCurvatureDirection);
-
-
+                    //// Calculate the tangent vector by taking the cross product of the normal vector and the arbitrary vector
+                    //glm::vec3 tangent = glm::cross(normal, direction);
+                    //// Calculate the principal curvature direction by taking the cross product of the normal vector and the tangent vector
+                    //glm::vec3 principalCurvatureDirection = glm::cross(normal, tangent);
+                    //mesh.directionField.push_back(principalCurvatureDirection);
                 }
                 else {
                     mesh.normals.push_back(glm::vec3(0.0f, 0.0f, 0.0f)); // default normal
@@ -603,16 +602,11 @@ SceneNode* getShapesFromFile(std::string inputfile)
         tempNode->vertexArrayObjectID = meshVAO;
         tempNode->VAOIndexCount = mesh.indices.size();
         tempNode->position = glm::vec3(0, 0, 0);
-        tempNode->scale = glm::vec3(50, 50, 50);
         tempRoot->children.push_back(tempNode);
     }
     return tempRoot;
 }
 
-//static float ToRadians(float angle)
-//{
-//    return (float)(PI / 180) * angle;
-//}
 float toRadians(float degrees)
 {
     return degrees * M_PI / 180.0;
@@ -623,15 +617,12 @@ unsigned int getTextureID(PNGImage image) {
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	// Set the texture wrapping/filtering options (on the currently bound texture object)
+    // GL_MIRRORED_REPEAT looked bad with my hatching textures, it created diamond shapes.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    // Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	// Set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    // Set texture filtering to linear
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	// Load and generate the texture

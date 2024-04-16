@@ -3,15 +3,12 @@ in layout(location = 0) vec3 normal_in;
 in layout(location = 1) vec2 textureCoordinates;
 in layout(location = 2) vec3 fragPos;
 in layout(location = 3) vec3 cameraPos;
-in layout(location = 14) mat4 projection_in;
 in layout(location = 5) mat4 cameraTransform_in;
 
-uniform sampler2D voronoiTexture;
 uniform sampler2D hatch_light_1;
 uniform sampler2D hatch_light_2;
 uniform sampler2D hatch_dense;
 uniform layout(location = 8) float shinyness;
-uniform layout(location = 9) vec2 u_resolution;
 
 out vec4 color;
 
@@ -23,7 +20,7 @@ struct LightStruct
 
 uniform LightStruct lightArray[3]; 
 
-vec3 makeWave(float angle, float scale, sampler2D tex)
+vec3 getTexture(float angle, float scale, sampler2D tex)
 {
     return vec3(texture(tex, fragPos.xy/scale));
 }
@@ -84,17 +81,17 @@ void main()
 
     else 
     {
-        wave = makeWave(0.25, 8, hatch_light_1);
+        wave = getTexture(0.25, 8, hatch_light_1);
 
         if(lightIntensity <= 0.40)
         {
-		    wave *= makeWave(0.25, 8, hatch_light_2);
+		    wave *= getTexture(0.25, 8, hatch_light_2);
             wave -= 0.15 - dither(textureCoordinates)*2;
         }
 
         if(lightIntensity <= 0.25)
         {
-            wave *= makeWave(0.2, 8, hatch_dense);
+            wave *= getTexture(0.2, 8, hatch_dense);
             wave -= 0.5 - dither(textureCoordinates);
         }
     }
