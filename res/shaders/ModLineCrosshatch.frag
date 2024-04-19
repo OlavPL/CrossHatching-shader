@@ -17,6 +17,26 @@ struct LightStruct
 
 uniform LightStruct lightArray[3]; 
 
+
+vec2 random(vec2 st) {
+    st = vec2( dot(st,vec2(127.1,311.7)),
+               dot(st,vec2(269.5,183.3)) );
+    return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+}
+
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    vec2 u = f*f*(3.0-2.0*f);
+
+    return mix( mix( dot(random(i + vec2(0.0,0.0)), f - vec2(0.0,0.0)),
+                     dot(random(i + vec2(1.0,0.0)), f - vec2(1.0,0.0)), u.x),
+                mix( dot(random(i + vec2(0.0,1.0)), f - vec2(0.0,1.0)),
+                     dot(random(i + vec2(1.0,1.0)), f - vec2(1.0,1.0)), u.x), u.y);
+}
+
+// returns a mod line wave rotated about a given angle, with a black-white ratio of thickness and xy direction of 0 or 1.
 float makeWave(float angle, float thickness, float frequency, int direction)
 {
     float cosTheta = cos(angle);
@@ -31,24 +51,24 @@ float makeWave(float angle, float thickness, float frequency, int direction)
 
     float wave;
     if(direction == 0)
-        wave = mod(rotatedPos.x, frequency) /frequency;
+        wave = mod(rotatedPos.x , frequency) /frequency;
     else
         wave = mod(rotatedPos.y, frequency) /frequency;
 
 
     wave += thickness;
     wave = floor(wave);
+    wave += abs(noise(fragPos.xy*50))*0.5; // noise to simulate graphite pencil texture
 
     return wave;
 }
 
 void main()
 {
-
 vec3 normal = normalize(normal_in);
-    vec3 viewDir = normalize(cameraPos - fragPos);
+vec3 viewDir = normalize(cameraPos - fragPos);
 
-
+    // Phong light model to find light intensity for the fragment
     // attenuation
     float d1 = length(fragPos - lightArray[0].position);
     float d2 = length(fragPos - lightArray[1].position);
@@ -86,7 +106,6 @@ vec3 normal = normalize(normal_in);
 
     // voronoi cells for irregular line rotation of waves. 
     vec4 voronoiColor = texture(voronoiTexture, textureCoordinates.xy*0.025);
-//    vec4 voronoiColor = texture(voronoiTexture, fragPos.xy*0.006);
     float voronoiIntensity = voronoiColor.x * 0.2989 + voronoiColor.y * 0.5870 + voronoiColor.z * 0.1140;
 
 

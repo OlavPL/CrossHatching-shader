@@ -42,11 +42,7 @@ SceneNode* monkeyNode;
 bool monkeyActive = false;
 
 // Light nodes
-SceneNode* lightNode1;
-SceneNode* lightNode2;
 SceneNode* lightNode3;
-SceneNode* lightNode4;
-SceneNode* lightNode5;
 
 // These are heap allocated, because they should not be initialised at the start of the program
 sf::SoundBuffer* buffer;
@@ -131,7 +127,7 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
 
     options = gameOptions;
 
-    // Test shader
+    // Creating shaders and textures
     shader = new Gloom::Shader();
     shader->makeBasicShader("../res/shaders/lightBasedTextures.vert", "../res/shaders/lightBasedTextures.frag");
         //add voronoi texture to shader
@@ -209,48 +205,18 @@ void initGame(GLFWwindow* window, CommandLineOptions gameOptions) {
     monkeyNode->scale = glm::vec3(10, 10, 10);
 
 
-    // Set up lights
-    lightNode1 = createSceneNode(POINT_LIGHT);
-    lightNode2 = createSceneNode(POINT_LIGHT);
+    // Set up lights, some unused
     lightNode3 = createSceneNode(POINT_LIGHT);
-    lightNode4 = createSceneNode(POINT_LIGHT);
-    lightNode5 = createSceneNode(POINT_LIGHT);
-    //rootNode->children.push_back(lightNode1);
-    rootNode->children.push_back(lightNode2);
     rootNode->children.push_back(lightNode3);
 
-    lightNode1->sourceID = 1;
-    lightNode1->color = glm::vec3(0,1,0);
-    lightNode2->sourceID = 2;
-    lightNode2->color = glm::vec3(0,0,1);
 
     lightNode3->sourceID = 0;
     lightNode3->color = glm::vec3(1, 1, 1);
-    lightNode4->sourceID = 1;
-    lightNode4->color = glm::vec3(0, 1, 0);
-    lightNode5->sourceID = 2;
-    lightNode5->color = glm::vec3(0, 0, 1);
 
     //Static light positions
-    lightNode1->position.x = -boxDimensions.x / 2 + 5;
-    lightNode1->position.y = -boxDimensions.y / 2 + 5;
-    lightNode1->position.z = -70;
-
-    lightNode2->position.x = boxDimensions.x / 2 - 10;
-    lightNode2->position.y = boxDimensions.y / 2 - 20;
-    lightNode2->position.z = -115;
-
     lightNode3->position.x = 5;
     lightNode3->position.y = 10;
     lightNode3->position.z = 20;
-
-    lightNode4->position.x = 0;
-    lightNode4->position.y = -45;
-    lightNode4->position.z = -50;
-
-    lightNode5->position.x = 15;
-    lightNode5->position.y = -45;
-    lightNode5->position.z = -50;
 
 
     //Making sure the SolNode is the last for when we are changing models.
@@ -289,8 +255,7 @@ void updateFrame(GLFWwindow* window) {
     // Camera movement speed
     float cameraSpeed = 40 * deltaTime;
 
-    // Move 
-    // Move forward
+    // Move ment keys
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         cameraPosition += cameraFront * cameraSpeed;
@@ -336,6 +301,7 @@ void updateFrame(GLFWwindow* window) {
         shader->activate();
 	}
 
+    // Chaning models
     tWasPressed = tIsPressed;
     tIsPressed = (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS);
     if (tIsPressed && !tWasPressed)
@@ -353,7 +319,7 @@ void updateFrame(GLFWwindow* window) {
 		}
     }
 
-    // If Q is pressed this frame, spin lights
+    // Control lights, spin lights
     qWasPressed = qIsPressed;
     qIsPressed = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
     if (qIsPressed && !qWasPressed)
@@ -387,51 +353,50 @@ void updateFrame(GLFWwindow* window) {
         sphereNode->position.y = sin(spinLightTimer * 0.2) * 25;
     }
 
-    glm::vec3 cameraRotation = glm::vec3(
-        (cos(toRadians(yaw)) * cos(toRadians(pitch))),
-        (sin(toRadians(pitch))),
-        (sin(toRadians(yaw)) * cos(toRadians(pitch)))
-        );
-
-    cameraFront = normalize(cameraRotation);
-
     if (spinLights)
     {
         spinLightTimer += deltaTime * lightSpeed;
 
-        lightNode3->position.x = sin(spinLightTimer ) * 40;
+        lightNode3->position.x = sin(spinLightTimer) * 40;
         lightNode3->position.z = cos(spinLightTimer) * 40;
-        lightNode3->position.y = sin(spinLightTimer *0.2) * 35 -10;
+        lightNode3->position.y = sin(spinLightTimer * 0.2) * 35 - 10;
 
         sphereNode->position.x = sin(spinLightTimer) * 40;
         sphereNode->position.z = cos(spinLightTimer) * 40;
-        sphereNode->position.y = sin(spinLightTimer * 0.2) * 35 -10;
+        sphereNode->position.y = sin(spinLightTimer * 0.2) * 35 - 10;
     }
+
+    // transformations 
+    glm::vec3 cameraRotation = glm::vec3(
+            (cos(toRadians(yaw)) * cos(toRadians(pitch))),
+            (sin(toRadians(pitch))),
+            (sin(toRadians(yaw)) * cos(toRadians(pitch)))
+        );
+
+    cameraFront = normalize(cameraRotation);
+
 
     glm::mat4 projection = glm::perspective(glm::radians(80.0f), float(windowWidth) / float(windowHeight), 0.1f, 350.f);
 
-    // camera look at center
     // update camera for movement relative to camera
     cameraTransform = glm::lookAt(cameraPosition, (cameraPosition + cameraFront), up);
 
 
     VP = projection * cameraTransform;
     updateNodeTransformations(boxNode, VP);
+
+    //Sending all the uniforms to the shader
     glUniform2fv(9, 1, glm::value_ptr(glm::vec2(boxNode->position.x, boxNode->position.y)));
     glUniform2fv(12, 1, glm::value_ptr(glm::vec2(windowWidth, windowHeight)));
-
     glUniform1i(textureLocation, 0);
     glUniform1i(hatch_light_location, 1);
     glUniform1i(hatch_light_2_location, 2);
     glUniform1i(hatch_dense_location, 3);
 
-    // Move and rotate various SceneNodes
     glUniformMatrix4fv(4, 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(5, 1, GL_FALSE, glm::value_ptr(cameraTransform));
     glUniformMatrix4fv(6, 1, GL_FALSE, glm::value_ptr(cameraPosition));
 
-
-    // Passing the resolution to shader
     glUniform2i(resolutionLocation, resWidth, resHeight);
 
     updateNodeTransformations(rootNode, glm::mat4(1));
@@ -501,6 +466,8 @@ void renderFrame(GLFWwindow* window) {
     renderNode(rootNode);
 }
 
+
+// Using TinyObjLoader to load .obj models
 SceneNode* getShapesFromFile(std::string inputfile, float scale)
 {
     // Load the .obj file
@@ -567,12 +534,6 @@ SceneNode* getShapesFromFile(std::string inputfile, float scale)
                     else {
                         direction = glm::vec3(0, normal.z, -normal.y);
                     }
-
-                    //// Calculate the tangent vector by taking the cross product of the normal vector and the arbitrary vector
-                    //glm::vec3 tangent = glm::cross(normal, direction);
-                    //// Calculate the principal curvature direction by taking the cross product of the normal vector and the tangent vector
-                    //glm::vec3 principalCurvatureDirection = glm::cross(normal, tangent);
-                    //mesh.directionField.push_back(principalCurvatureDirection);
                 }
                 else {
                     mesh.normals.push_back(glm::vec3(0.0f, 0.0f, 0.0f)); // default normal
